@@ -1,19 +1,10 @@
 import { NCData } from '$lib/db/NCData';
-export async function load() {
-	// const data = await NCData.find({}).project({ RegionName: 1, Total: 1, _id: 0 }).toArray();
-	// const data = console.log('data', data);
-	const data = NCData.find({}).project({ RegionName: 1, Total: 1, _id: 0 }).toArray();
-	// const data = new Promise((res, rej) => {
-	// 	rej();
-	// }).catch((err) => {});
-
-	// const streamedNCData = async () => {
-	// 	await new Promise((r) => setTimeout(r, 5000));
-	// 	const data = await NCData.find({}).project({ RegionName: 1, Total: 1, _id: 0 }).toArray();
-	// 	return JSON.stringify(data);
-	// };
-
+export const load = async function () {
+	const data = NCData.find({})
+		.project({ RegionName: 1, Total: 1, _id: 0, lat: 1, lng: 1 })
+		.toArray();
+	// console.log('data', data);
 	return {
 		NCData: data
 	};
-}
+};
