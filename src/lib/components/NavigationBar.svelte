@@ -4,7 +4,9 @@
 </script>
 
 <div class="py-3 px-5 flex justify-between items-center bg-stone-900">
-	<h2>Link</h2>
+	<div class="Flex items-center">
+		<img src="/favicon.png" alt="Favicon" class="h-8 w-8 mr-3">
+	</div>
 	<a href="/">
 		<h1 class="text-2xl font-bold text-white">
 			<span class="text-costar-orange">Nu</span>Homes.co(m)
