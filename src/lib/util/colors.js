@@ -1,5 +1,5 @@
 // https://stackoverflow.com/questions/66123016/interpolate-between-two-colours-based-on-a-percentage-value
-function interpolate(color1, color2, percent) {
+export function interpolate(color1, color2, percent) {
 	// Convert the hex colors to RGB values
 	const r1 = parseInt(color1.substring(1, 3), 16);
 	const g1 = parseInt(color1.substring(3, 5), 16);
@@ -18,4 +18,4 @@ function interpolate(color1, color2, percent) {
 	return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
-export default interpolate;
+export default { interpolate };

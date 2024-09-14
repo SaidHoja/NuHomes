@@ -4,7 +4,7 @@
 	export let setSelectedMapMarker;
 	export let resizeEventTarget;
 	import { onMount } from 'svelte';
-	import interpolate from '$lib/util/colors';
+	import { interpolate } from '$lib/util/colors';
 	import { CircleCheck } from 'lucide-svelte';
 
 	const isValidPoint = (point) => {
