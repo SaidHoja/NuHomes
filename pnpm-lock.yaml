@@ -20,12 +20,18 @@ importers:
       lucide-svelte:
         specifier: ^0.441.0
         version: 0.441.0(svelte@4.2.19)
+      mode-watcher:
+        specifier: ^0.4.1
+        version: 0.4.1(svelte@4.2.19)
       mongodb:
         specifier: ^6.9.0
         version: 6.9.0
       paneforge:
         specifier: ^0.0.5
         version: 0.0.5(svelte@4.2.19)
+      svelte-sonner:
+        specifier: ^0.3.28
+        version: 0.3.28(svelte@4.2.19)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -770,6 +776,11 @@ packages:
   mlly@1.7.1:
     resolution: {integrity: sha512-rrVRZRELyQzrIUAVMHxP97kv+G786pHmOKzuFII8zDYahFBS7qnHh2AlYSl1GAHhaMPCz6/oHjVMcfFYgFYHgA==}
 
+  mode-watcher@0.4.1:
+    resolution: {integrity: sha512-bNC+1NXmwEFZtziCdZSgP7HFQTpqJPcQn9GwwJQGSf6SBF3neEPYV1uRwkYuAQwbsvsXIYtzaqgedDzJ7D1mhg==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.1
+
   mongodb-connection-string-url@3.0.1:
     resolution: {integrity: sha512-XqMGwRX0Lgn05TDB4PyG2h2kKO/FfWJyCzYQbIhXUxz7ETt0I/FqHjUeqj37irJ+Dl1ZtU82uYyj14u2XsZKfg==}
 
@@ -1031,6 +1042,11 @@ packages:
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
+
+  svelte-sonner@0.3.28:
+    resolution: {integrity: sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0-next.1
 
   svelte@4.2.19:
     resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
@@ -1801,6 +1817,10 @@ snapshots:
       pkg-types: 1.2.0
       ufo: 1.5.4
 
+  mode-watcher@0.4.1(svelte@4.2.19):
+    dependencies:
+      svelte: 4.2.19
+
   mongodb-connection-string-url@3.0.1:
     dependencies:
       '@types/whatwg-url': 11.0.5
@@ -2026,6 +2046,10 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svelte-hmr@0.16.0(svelte@4.2.19):
+    dependencies:
+      svelte: 4.2.19
+
+  svelte-sonner@0.3.28(svelte@4.2.19):
     dependencies:
       svelte: 4.2.19
 

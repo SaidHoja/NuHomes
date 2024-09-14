@@ -100,8 +100,4 @@
 	</Resizable.PaneGroup>
 </Section>
 
-<div class="w-2/5 h-[550px] rounded-md">
-	<ChatPanel />
-</div>
-
 <div class="h-8" />
