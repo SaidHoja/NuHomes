@@ -9,6 +9,8 @@
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, 360 - 78.6569], 7);
 
+		console.log(datapoints[0]);
+
 		// Add tile layers from openstreetmap (TODO: Review TOS for site)
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
@@ -28,15 +30,15 @@
 
 		// Create a map marker for each of our points
 		for (const point of datapoints) {
-			const circle = L.circle([point.lat, point.long], {
+			const circle = L.circle([point.lat, 360 + point.lng], {
 				color: 'red',
-				fillColor: '#f03',
+				fillColor: point.Total != NaN ? '#f03' : '#0f0',
 				fillOpacity: 0.5,
-				radius: point.size * 5000,
+				radius: point.Total ?? 2000,
 				sourceData: point
 			}).addTo(map);
 
-			circle.bindPopup(`${point.city}, ${point.state}<br />${point.size}`);
+			circle.bindPopup(`${point.RegionName}<br />${point.size}`);
 			circle.on('click', onPointClick);
 		}
 	});

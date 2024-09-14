@@ -71,7 +71,10 @@
 			{:then datapoints}
 				<InteractiveMap {datapoints} {setSelectedMapMarker} {resizeEventTarget} />
 			{:catch err}
-				<h1>Error!</h1>
+				<div class="w-full h-[550px] flex flex-col items-center justify-center gap-1">
+					<h1 class="text-lg">Something went wrong!</h1>
+					<h2 class="text-stone-500">Please try again later.</h2>
+				</div>
 			{/await}
 		</Resizable.Pane>
 		<Resizable.Handle
