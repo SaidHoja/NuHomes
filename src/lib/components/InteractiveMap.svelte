@@ -22,7 +22,8 @@
 
 		// Invalidate our map when the map pane is resized bigger than before
 		resizeEventTarget.addEventListener('interactiveMapResized', () => {
-			console.log('map resized');
+			// console.log('map resized');
+			map.invalidateSize();
 		});
 
 		// Create a map marker for each of our points

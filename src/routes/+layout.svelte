@@ -1,7 +1,11 @@
 <script>
+	import NavigationBar from '$lib/components/NavigationBar.svelte';
+	import { Separator } from '$lib/components/ui/separator';
 	import '../app.css';
 </script>
 
+<NavigationBar />
+<Separator />
 <slot />
 
 <head>
