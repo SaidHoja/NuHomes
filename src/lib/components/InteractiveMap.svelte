@@ -3,8 +3,20 @@
 	import { onMount } from 'svelte';
 
 	const datapoints = [
-		[[38.848761293619916, 360 - 77.29737585786484], 20],
-		[[37.54120534759968, 360 - 77.43625056309851], 10]
+		{
+			lat: 38.848761293619916,
+			long: 360 - 77.29737585786484,
+			size: 20,
+			city: 'Fairfax',
+			state: 'VA'
+		},
+		{
+			lat: 37.54120534759968,
+			long: 360 - 77.43625056309851,
+			size: 10,
+			city: 'Richmond',
+			state: 'VA'
+		}
 	];
 
 	onMount(async () => {
@@ -18,19 +30,19 @@
 		}).addTo(map);
 
 		function onPointClick(e) {
-			alert('Point was clicked at ' + e.latlng);
+			// alert('Point was clicked at ' + e.latlng);
 		}
 
 		for (const point of datapoints) {
 			// console.log('adding point', point);
-			const circle = L.circle(point[0], {
+			const circle = L.circle([point.lat, point.long], {
 				color: 'red',
 				fillColor: '#f03',
 				fillOpacity: 0.5,
-				radius: point[1] * 5000
+				radius: point.size * 5000
 			}).addTo(map);
 
-			circle.bindPopup('I am a popup!');
+			circle.bindPopup(`${point.city}, ${point.state}<br />${point.size}`);
 			circle.on('click', onPointClick);
 		}
 	});
@@ -49,7 +61,7 @@
 
 <style>
 	#map {
-		height: 500px;
+		height: 550px;
 		border-radius: 1em;
 	}
 </style>
