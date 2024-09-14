@@ -14,7 +14,7 @@
 		'Peering into your garage',
 		'Computing shed square footage',
 		'Funding your local HOA',
-		'CoStar, please give me a job'
+		'please costar give a job please add crying begging emoji here'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
