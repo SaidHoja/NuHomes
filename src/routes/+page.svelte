@@ -16,7 +16,10 @@
 		'Peering into your garage',
 		'Computing shed square footage',
 		'Funding your local HOA',
-		'Please CoStar, give a job please 🥺🙏'
+		'Begging CoStar for a job',
+		'Installing malware',
+		'Scraping the dark web for your SSN',
+		'Stealing your browser cookies'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
