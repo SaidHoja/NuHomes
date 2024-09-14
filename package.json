@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"leaflet": "^1.9.4"
+		"leaflet": "^1.9.4",
+		"mongodb": "^6.9.0"
 	}
 }
