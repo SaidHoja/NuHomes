@@ -17,6 +17,10 @@
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
+		function onPointClick(e) {
+			alert('Point was clicked at ' + e.latlng);
+		}
+
 		for (const point of datapoints) {
 			// console.log('adding point', point);
 			const circle = L.circle(point[0], {
@@ -25,6 +29,9 @@
 				fillOpacity: 0.5,
 				radius: point[1] * 5000
 			}).addTo(map);
+
+			circle.bindPopup('I am a popup!');
+			circle.on('click', onPointClick);
 		}
 	});
 </script>
