@@ -8,29 +8,13 @@
 	import * as Resizable from '$lib/components/ui/resizable';
 	export let data;
 
-	// const datapoints = [
-	// 	{
-	// 		lat: 38.848761293619916,
-	// 		long: 360 - 77.29737585786484,
-	// 		size: 20,
-	// 		city: 'Fairfax',
-	// 		state: 'VA'
-	// 	},
-	// 	{
-	// 		lat: 37.54120534759968,
-	// 		long: 360 - 77.43625056309851,
-	// 		size: 10,
-	// 		city: 'Richmond',
-	// 		state: 'VA'
-	// 	}
-	// ];
-
 	// Fake loading bar and messages
 	const funLoadingMessages = [
 		'Taking pictures of your house',
 		'Peering into your garage',
 		'Computing shed square footage',
-		'Funding your local HOA'
+		'Funding your local HOA',
+		'CoStar, please give me a job'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
@@ -45,6 +29,17 @@
 	setInterval(() => {
 		loadingProgress += Math.min(85 - loadingProgress, Math.random() * 3);
 	}, 100);
+
+	const loadingPromise = new Promise(async (res, rej) => {
+		try {
+			const dat = await data.NCData;
+			setTimeout(() => {
+				res(dat);
+			}, 2500);
+		} catch (e) {
+			rej(e);
+		}
+	});
 
 	// TODO: Complete this in InteractiveMap.svelte
 	// TODO: Complete event handler for resizer to refresh map (https://leafletjs.com/reference.html#map-methods-for-modifying-map-state)
@@ -61,7 +56,7 @@
 <Section>
 	<Resizable.PaneGroup direction="horizontal">
 		<Resizable.Pane defaultSize={65} minSize={20}>
-			{#await data.NCData}
+			{#await loadingPromise}
 				<div class="w-full h-[550px] flex flex-col items-center justify-center gap-2">
 					<h1>{funLoadingMessage}...</h1>
 					<div class="w-2/5">

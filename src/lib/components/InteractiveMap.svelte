@@ -11,6 +11,8 @@
 		return point && point.lat && point.lng && point.Total;
 	};
 
+	// TODO: Add buttons for returning to global view and current location
+
 	onMount(async () => {
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, -78.6569], 7);
