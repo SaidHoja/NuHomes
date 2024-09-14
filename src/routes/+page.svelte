@@ -1,48 +1,57 @@
 <script>
+	import { tweened } from 'svelte/motion';
+	import { cubicInOut, cubicOut } from 'svelte/easing';
 	import InteractiveMap from '$lib/components/InteractiveMap.svelte';
-	import NavigationBar from '$lib/components/NavigationBar.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import MapMarkerInformationPanel from '$lib/components/MapMarkerInformationPanel.svelte';
-	import { Separator } from '$lib/components/ui/separator';
 	import { Progress } from '$lib/components/ui/progress';
 	import * as Resizable from '$lib/components/ui/resizable';
 	export let data;
 
-	// Fake loading bar and messages
+	// Loading bar and messages
+	const LOADING_TWEEN_DURATION = 400;
 	const funLoadingMessages = [
 		'Taking pictures of your house',
 		'Peering into your garage',
 		'Computing shed square footage',
 		'Funding your local HOA',
-		'please costar give a job please add crying begging emoji here'
+		'Please CoStar, give a job please 🥺🙏'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
 	};
 	let funLoadingMessage = getFunLoadingMessage();
-	let loadingProgress = 12;
+	let loadingProgress = tweened(0.12, {
+		duration: LOADING_TWEEN_DURATION,
+		easing: cubicInOut
+	});
 
+	// Cycle loading message
 	setInterval(() => {
 		funLoadingMessage = getFunLoadingMessage();
-	}, 3500);
+		loadingProgress.set($loadingProgress + Math.random() * 0.1);
+	}, 1600);
 
-	setInterval(() => {
-		loadingProgress += Math.min(85 - loadingProgress, Math.random() * 3);
-	}, 100);
-
+	// TODO: Review timing
+	// Clientside promise wrapper for streamed data
 	const loadingPromise = new Promise(async (res, rej) => {
 		try {
 			const dat = await data.NCData;
-			setTimeout(() => {
-				res(dat);
-			}, 2500);
+			setTimeout(
+				() => {
+					loadingProgress.set(1);
+					setTimeout(() => {
+						res(dat);
+					}, LOADING_TWEEN_DURATION + 100);
+				},
+				2000 + Math.random() * 600
+			);
 		} catch (e) {
 			rej(e);
 		}
 	});
 
-	// TODO: Complete this in InteractiveMap.svelte
-	// TODO: Complete event handler for resizer to refresh map (https://leafletjs.com/reference.html#map-methods-for-modifying-map-state)
+	// Handlers and values for the currently-selected map marker
 	let selectedMapMarker = null;
 	const setSelectedMapMarker = (marker) => {
 		selectedMapMarker = marker;
@@ -51,8 +60,6 @@
 	const resizeEvent = new Event('interactiveMapResized');
 </script>
 
-<!-- <NavigationBar />
-<Separator /> -->
 <Section>
 	<Resizable.PaneGroup direction="horizontal">
 		<Resizable.Pane defaultSize={65} minSize={20}>
@@ -60,7 +67,7 @@
 				<div class="w-full h-[550px] flex flex-col items-center justify-center gap-2">
 					<h1>{funLoadingMessage}...</h1>
 					<div class="w-2/5">
-						<Progress value={loadingProgress} />
+						<Progress value={$loadingProgress * 100} />
 					</div>
 				</div>
 			{:then datapoints}

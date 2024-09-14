@@ -17,7 +17,7 @@
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, -78.6569], 7);
 
-		console.log(datapoints[0]);
+		// console.log(datapoints[0]);
 
 		// Add tile layers from openstreetmap (TODO: Review TOS for site)
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -35,12 +35,11 @@
 
 		// Set selected map marker for info panel when a map marker is clicked on
 		function onPointClick(e) {
-			let point = e?.sourceTarget?.options?.sourceData;
-			let zoomLevel = Math.ceil((maxTotal - point.Total) / 5000);
+			// TODO: Tweak this to see more of the bounds later
+			let point = e?.sourceTarget;
 			if (point) {
-				// console.log(point.RegionName, point.Total, zoomLevel);
-				map.flyTo([point.lat, point.lng], zoomLevel);
-				setSelectedMapMarker(point);
+				map.flyToBounds(point.getBounds());
+				setSelectedMapMarker(point?.options?.sourceData);
 			}
 		}
 
