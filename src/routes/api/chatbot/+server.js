@@ -1,7 +1,4 @@
-import OpenAI from 'openai';
 import { PPLX_KEY } from '$env/static/private';
-
-const perplexity = new OpenAI({ apiKey: PPLX_KEY });
 
 export const POST = async ({ request: req }) => {
 	// Extract the `messages` from the body of the request
