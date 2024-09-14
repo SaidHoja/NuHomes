@@ -1,10 +1,10 @@
-<div class="p-8 pb-0">
+<div class="m-8 mb-0 shadow-xl rounded-md">
 	<slot />
 </div>
 
 <style>
 	div {
 		height: min-content;
-		width: 100%;
+		width: auto;
 	}
 </style>
