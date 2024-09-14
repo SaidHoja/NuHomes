@@ -1,5 +1,5 @@
 <script>
-    let chat = '';
+    let messages = [{role: "user", content: "Hello"}];
   
     async function sendRequest() {
       console.log('sending request');
