@@ -22,3 +22,7 @@ vite.config.ts.timestamp-*
 
 # pnpm
 # pnpm-lock.yaml
+
+# shadcn-svelte
+# This is unfortunately needed when adding new components, but stops from building
+jsconfig.json

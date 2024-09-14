@@ -1,12 +1,13 @@
 <script>
+	export let data;
 	import { tweened } from 'svelte/motion';
 	import { cubicInOut, cubicOut } from 'svelte/easing';
 	import InteractiveMap from '$lib/components/InteractiveMap.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import MapMarkerInformationPanel from '$lib/components/MapMarkerInformationPanel.svelte';
+	import ChatPanel from '$lib/components/ChatPanel.svelte';
 	import { Progress } from '$lib/components/ui/progress';
 	import * as Resizable from '$lib/components/ui/resizable';
-	export let data;
 
 	// Loading bar and messages
 	const LOADING_TWEEN_DURATION = 400;
@@ -26,10 +27,15 @@
 		easing: cubicInOut
 	});
 
+	// FIXME: I think the interval is created here on the server and streamed to the client, but is being tried to remove on the client instead of the server, which keeps it loading forever...
 	// Cycle loading message
-	setInterval(() => {
+	const loadingRepeatingInterval = setInterval(() => {
 		funLoadingMessage = getFunLoadingMessage();
-		loadingProgress.set($loadingProgress + Math.random() * 0.1);
+		const before = $loadingProgress;
+		// const add = Math.random() * 0.1;
+		const add = Math.random();
+		loadingProgress.set(before + add);
+		console.log(before, $loadingProgress, add);
 	}, 1600);
 
 	// TODO: Review timing
@@ -39,6 +45,7 @@
 			const dat = await data.NCData;
 			setTimeout(
 				() => {
+					clearInterval(loadingRepeatingInterval);
 					loadingProgress.set(1);
 					setTimeout(() => {
 						res(dat);
@@ -92,4 +99,9 @@
 		</Resizable.Pane>
 	</Resizable.PaneGroup>
 </Section>
+
+<div class="w-2/5 h-[550px] rounded-md">
+	<ChatPanel />
+</div>
+
 <div class="h-8" />
