@@ -1,9 +1,11 @@
 <script>
 	import NavigationBar from '$lib/components/NavigationBar.svelte';
 	import { Separator } from '$lib/components/ui/separator';
+	import { Toaster } from '$lib/components/ui/sonner';
 	import '../app.css';
 </script>
 
+<Toaster />
 <NavigationBar />
 <Separator />
 <slot />

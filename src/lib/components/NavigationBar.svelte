@@ -10,7 +10,10 @@
 			<span class="text-costar-orange">Nu</span>Homes.co(m)
 		</h1>
 	</a>
-	<Button variant="costar" href="https://github.com/SaidHoja/VTHacks24" target="_blank"
-		><GitHubIcon class="mr-2 h-4 w-4" />View on GitHub</Button
+	<Button
+		variant="secondary"
+		href="https://github.com/SaidHoja/VTHacks24"
+		target="_blank"
+		size="icon"><GitHubIcon class="h-4 w-4" /></Button
 	>
 </div>
