@@ -4,10 +4,16 @@
 	export let setSelectedMapMarker;
 	export let resizeEventTarget;
 	import { onMount } from 'svelte';
+	import interpolate from '$lib/util/colors';
+	import { CircleCheck } from 'lucide-svelte';
+
+	const isValidPoint = (point) => {
+		return point && point.lat && point.lng && point.Total;
+	};
 
 	onMount(async () => {
 		const L = await import('leaflet');
-		const map = L.map('map').setView([37.4316, 360 - 78.6569], 7);
+		const map = L.map('map').setView([37.4316, -78.6569], 7);
 
 		console.log(datapoints[0]);
 
@@ -17,29 +23,57 @@
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
-		// Set selected map marker for info panel when a map marker is clicked on
-		function onPointClick(e) {
-			setSelectedMapMarker(e.sourceTarget.options.sourceData);
-		}
-
 		// Invalidate our map when the map pane is resized bigger than before
 		resizeEventTarget.addEventListener('interactiveMapResized', () => {
-			// console.log('map resized');
 			map.invalidateSize();
 		});
 
+		let maxTotal = 0;
+		let minTotal = Infinity;
+
+		// Set selected map marker for info panel when a map marker is clicked on
+		function onPointClick(e) {
+			let point = e?.sourceTarget?.options?.sourceData;
+			let zoomLevel = Math.ceil((maxTotal - point.Total) / 5000);
+			if (point) {
+				// console.log(point.RegionName, point.Total, zoomLevel);
+				map.flyTo([point.lat, point.lng], zoomLevel);
+				setSelectedMapMarker(point);
+			}
+		}
+
+		for (const point of datapoints) {
+			if (isValidPoint(point)) {
+				maxTotal = Math.max(maxTotal, point.Total);
+				minTotal = Math.min(minTotal, point.Total);
+			}
+		}
+
 		// Create a map marker for each of our points
 		for (const point of datapoints) {
-			const circle = L.circle([point.lat, 360 + point.lng], {
-				color: 'red',
-				fillColor: point.Total != NaN ? '#f03' : '#0f0',
-				fillOpacity: 0.5,
-				radius: point.Total ?? 2000,
-				sourceData: point
-			}).addTo(map);
+			if (isValidPoint(point)) {
+				const fillColor = interpolate(
+					'#3217e3',
+					'#ff850f',
+					(point.Total - minTotal) / (maxTotal - minTotal)
+				);
+				const circle = L.circle([point.lat, point.lng], {
+					color: 'red',
+					fillColor,
+					fillOpacity: 0.75,
+					radius: point.Total * 3,
+					opacity: 0,
+					weight: 0,
+					color: fillColor,
+					sourceData: point
+				}).addTo(map);
 
-			circle.bindPopup(`${point.RegionName}<br />${point.size}`);
-			circle.on('click', onPointClick);
+				// circle.bindPopup(`${point.RegionName}<br />${point.size}`);
+				circle.on('click', onPointClick);
+			} else {
+				console.log('Point does not contain expected value(s):', point);
+				continue;
+			}
 		}
 	});
 </script>
@@ -58,7 +92,6 @@
 <style>
 	#map {
 		height: 550px;
-		/* border-radius: 1em 0 0 1em; */
 		@apply rounded-md;
 		@apply rounded-tr-none;
 		@apply rounded-br-none;
