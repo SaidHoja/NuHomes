@@ -13,7 +13,9 @@
 	export let prevRegionName = '';
 	export let chatbotSummary = '';
 	import ChatPanel from '$lib/components/ChatPanel.svelte';
+	import AIChatThrobber from '$lib/components/AIChatThrobber.svelte';
 	import { Separator } from '$lib/components/ui/separator';
+	import * as Table from '$lib/components/ui/table';
 	import { numberWithCommas } from '$lib/util/numformat';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 
@@ -33,6 +35,42 @@
 		console.log(summary);
 		return summary;
 	}
+
+	async function getAdditionalData(regionName) {
+		console.log(regionName);
+		const response = await fetch(`/api/details/${regionName}`);
+		let additionalData = await response.json();
+		additionalData = additionalData.details;
+		console.log(additionalData);
+		return additionalData;
+	}
+	function cleanData(additionalData) {
+		if (!additionalData) return {};
+		const allowedFields = ['Total', 'Median household income', 'population', 'Median Sale Price'];
+		let dict = {};
+		for (let i of Object.entries(additionalData)) {
+			console.log(i);
+			if (allowedFields.includes(i[0])) {
+				dict[i[0]] = i[1];
+			}
+		}
+		console.log(dict);
+		const order = ['Total', 'Median Sale Price', 'population', 'Median household income'];
+		let newDict = {};
+		for (let i of order) {
+			if (i in dict) {
+				if (i == 'Total') {
+					newDict['Total New Developments'] = dict[i];
+				} else if (i == 'population') {
+					newDict['Population'] = dict[i];
+				} else {
+					newDict[i] = dict[i];
+				}
+			}
+		}
+
+		return newDict;
+	}
 </script>
 
 <div class="h-full w-full flex flex-col justify-center text-balance text-stone-500 text-md">
@@ -41,7 +79,7 @@
 			{selectedMapMarker?.RegionName}
 		</h2>
 		<Separator class="mb-2" />
-		<Tabs.Root bind:value={currentTab} class="h-full w-full gap-2 flex flex-col">
+		<Tabs.Root bind:value={currentTab} class="h-full w-full gap-0 flex flex-col">
 			<Tabs.List class="grid w-full grid-cols-2 bg-stone-200 gap-1">
 				<Tabs.Trigger
 					value="description"
@@ -55,23 +93,40 @@
 				>
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">
-				<p>
+				<h2 class="text-lg ml-2 mb-1">AI Summary</h2>
+				<div class="bg-white rounded-md p-2 mb-4 text-md">
 					{#if prevRegionName == selectedMapMarker?.RegionName}
 						{chatbotSummary}
 					{:else}
 						{#await getCityDescription(selectedMapMarker?.RegionName)}
-							Loading...
+							<AIChatThrobber />
+							Loading AI summary of {selectedMapMarker?.RegionName}...
 						{:then summary}
 							{summary}
 						{/await}
 					{/if}
-					<br />
-					<br />
+				</div>
+				<h2 class="text-lg ml-2 mb-1">Location Statistics</h2>
+
+				<p class="ml-3">
+					{#await getAdditionalData(selectedMapMarker?.RegionName)}
+						Loading additional data...
+					{:then additionalData}
+						<Table.Root>
+							<Table.Body>
+								{#each Object.entries(cleanData( { ...additionalData, ...selectedMapMarker } )) as [key, value]}
+									<Table.Row>
+										<Table.Cell>{key}</Table.Cell>
+										<Table.Cell>{numberWithCommas(value)}</Table.Cell>
+									</Table.Row>
+								{/each}
+							</Table.Body>
+						</Table.Root>
+					{:catch}
+						Something went wrong!
+					{/await}
 				</p>
-				<p>
-					New housing projects in the last 24 months: {numberWithCommas(selectedMapMarker?.Total)}
-				</p>
-				<p>Total population: {numberWithCommas(selectedMapMarker?.population)}</p>
+				<!-- {#if selectedMapMarker?.['Median household income']}{/if} -->
 			</Tabs.Content>
 			<Tabs.Content value="chatbot" class="flex-grow">
 				<ChatPanel {messages} city={selectedMapMarker?.RegionName} />
