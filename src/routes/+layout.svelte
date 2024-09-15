@@ -38,7 +38,9 @@
 	/* Originally 637px */
 	.hero-section {
 		position: relative;
-		background: url('/testImage.jpg') no-repeat center center;
+		background:
+			linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+			url('/testImage.jpg') no-repeat center center;
 		/* filter: brightness(80%); */
 		background-size: cover; /* Makes sure the image covers the entire container */
 		height: 420px; /* Set the height of the section to match the aspect ratio of your image */

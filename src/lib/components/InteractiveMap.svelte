@@ -51,7 +51,7 @@
 					title: 'Current location'
 				}).addTo(map);
 				if (!hasMapBeenClicked) {
-					map.setView(...VIEW_CUR_GEO);
+					// map.setView(...VIEW_CUR_GEO);
 				}
 				geolocationAllowed = true;
 			},
@@ -97,7 +97,7 @@
 		for (const point of datapoints) {
 			if (isValidPoint(point)) {
 				const fillColor = interpolate(
-					'#3217e3',
+					'#ffffff',
 					'#ff850f',
 					(point.Total - minTotal) / (maxTotal - minTotal)
 				);
@@ -106,9 +106,9 @@
 					fillColor,
 					fillOpacity: 0.75,
 					radius: Math.max(12000, point.Total * 3),
-					opacity: 0,
-					weight: 0,
-					color: fillColor,
+					opacity: 0.7,
+					weight: 1,
+					color: '#000000',
 					sourceData: point
 				}).addTo(map);
 
