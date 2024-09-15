@@ -168,8 +168,10 @@
 							selectMapMarker(searchResults[searchResultsCursor]);
 						} else if (e.key === 'Tab') {
 							e.preventDefault();
-							searchResultsCursor += 1;
-							searchResultsCursor %= 2;
+							if (searchResults.length > 1) {
+								searchResultsCursor += 1;
+								searchResultsCursor %= 2;
+							}
 						} else {
 							searchFocused = true;
 						}
