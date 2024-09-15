@@ -25,7 +25,7 @@
 <!-- TODO: Add footer with information -->
 
 <head>
-	<title>NuHomes</title>
+	<title>NuHomes • Your new home awaits you!</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link
