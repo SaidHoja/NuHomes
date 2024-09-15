@@ -7,7 +7,7 @@
 
 <Toaster />
 <NavigationBar />
-<Separator />
+<!-- <Separator /> -->
 
 <div class="hero-section -z-[1]">
 	<div class="bg-transparent text-6xl mb-20">
@@ -17,7 +17,7 @@
 		<h2 class="text-2xl text-stone-200 mt-2">
 			Dive deeper into where new construction is appearing!
 		</h2>
-		<div id="vue-homepage-typeahead" class="typeahead-container"></div>
+		<div class="typeahead-container"></div>
 	</div>
 </div>
 <slot />
@@ -39,6 +39,7 @@
 	.hero-section {
 		position: relative;
 		background: url('/testImage.jpg') no-repeat center center;
+		/* filter: brightness(80%); */
 		background-size: cover; /* Makes sure the image covers the entire container */
 		height: 420px; /* Set the height of the section to match the aspect ratio of your image */
 		display: flex;
@@ -46,6 +47,7 @@
 		justify-content: center; /* Horizontally centers the content */
 		color: white; /* Text color, change as needed */
 		text-align: center; /* Center text alignment */
+		@apply -mt-16;
 	}
 
 	.typeahead-container {
