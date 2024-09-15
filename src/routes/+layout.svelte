@@ -12,7 +12,7 @@
 <div class="hero-section -z-[1]">
 	<div class="bg-transparent text-6xl mb-20">
 		<h1 class="bg-transparent">
-			Looking for a <span style="color:orange; font-weight: bold">Nu</span> place to live?
+			Looking for a <span class="font-bold text-costar-orange">Nu</span> place to live?
 		</h1>
 		<h2 class="text-2xl text-stone-200 mt-2">
 			Dive deeper into where new construction is appearing!
