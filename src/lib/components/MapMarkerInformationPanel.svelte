@@ -84,7 +84,7 @@
 		const fields = {
 			Total: {
 				dollars: false,
-				prettyName: 'Total New Developments*'
+				prettyName: 'Total New Developments'
 			},
 			'Median household income': {
 				dollars: true,
@@ -106,7 +106,21 @@
 				filtered[fields[key].prettyName] = (fields[key].dollars ? '$' : '') + data[key];
 			}
 		}
-		return filtered;
+
+		const order = [
+			'Total New Developments',
+			'Median Sale Price',
+			'Population',
+			'Median Household Income'
+		];
+		let newDict = {};
+		for (let i of order) {
+			if (i in filtered) {
+				newDict[i] = filtered[i];
+			}
+		}
+
+		return newDict;
 	}
 </script>
 
@@ -130,8 +144,8 @@
 				>
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">
-				<h2 class="text-lg ml-2 mb-1">AI Summary</h2>
-				<div class="bg-white rounded-md p-2 px-3 mb-4 text-md">
+				<h2 class="text-xl ml-2 mb-1">AI Summary</h2>
+				<div class="bg-white rounded-md p-2 px-3 mb-4 text-lg">
 					{#if prevRegionName == selectedMapMarker?.RegionName}
 						{chatbotSummary}
 					{:else}
@@ -143,9 +157,9 @@
 						{/await}
 					{/if}
 				</div>
-				<h2 class="text-lg ml-2 mb-1">Location Statistics</h2>
+				<h2 class="text-xl ml-2 mb-1 -mt-2">Location Statistics</h2>
 
-				<p class="ml-3">
+				<p class="ml-3 text-lg">
 					{#await getAdditionalData(selectedMapMarker?.RegionName)}
 						Loading additional data...
 					{:then additionalData}
