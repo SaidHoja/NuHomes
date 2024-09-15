@@ -1,6 +1,8 @@
 <script>
 	export let city = 'your favorite city';
 	import { enhance } from '$app/forms';
+	import ChatMessage from '$lib/components/ChatMessage.svelte';
+	import AIChatThrobber from '$lib/components/AIChatThrobber.svelte';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button';
 	import { buttonVariants } from '$lib/components/ui/button';
@@ -8,19 +10,23 @@
 	import ArrowBigUpDash from '~icons/lucide/arrow-big-up-dash';
 	let replyPending = false;
 	let userInput = '';
+	let placeholderFirstMessage = {
+		role: LLM_ID,
+		content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
+	};
 	let messages = [
-		{
-			role: LLM_ID,
-			content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
-		},
-		{
-			role: LLM_ID,
-			content: `Hi, Nubert! It's great to meet you. Could you tell me more about ${city}?`
-		},
-		{
-			role: USER_ID,
-			content: `Definitely, here's some information about the wonderful destination of ${city}: (...)`
-		}
+		// {
+		// 	role: LLM_ID,
+		// 	content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
+		// },
+		// {
+		// 	role: USER_ID,
+		// 	content: `Hi, Nubert! It's great to meet you. Could you tell me more about ${city}?`
+		// },
+		// {
+		// 	role: LLM_ID,
+		// 	content: `Definitely, here's some information about the wonderful destination of ${city}: (...)`
+		// }
 	];
 
 	const USER_ID = 'user';
@@ -42,11 +48,13 @@
 		const existingMessages = JSON.parse(formData.get('messages'));
 		const newMessage = formData.get('newMessage');
 		userInput = '';
+		replyPending = true;
 
 		messages = [...existingMessages, { role: USER_ID, content: newMessage, confirmed: false }];
 
 		return async ({ result, update }) => {
 			console.log('form result:', result);
+			replyPending = false;
 			if (result.status == 200) {
 				if (result.data.success) {
 					messages[messages.length - 1].confirmed = true;
@@ -67,22 +75,15 @@
 </script>
 
 <div class="flex flex-col justify-end rounded-md h-full gap-2">
-	<div class="flex flex-col px-4 grow overflow-y-scroll h-2 gap-2 justify-end">
-		{#each messages.filter((a) => a.role != FIRST_ID) as message}
-			<div
-				class={`${message.role == USER_ID ? 'self-end' : 'self-start'} flex gap-2 max-w-[85%] w-auto`}
-			>
-				<div
-					class={`${message.role == USER_ID ? 'order-3' : 'order-1'} w-8 h-8 rounded-lg bg-stone-700 text-white text-center self-end grid grid-rows-1`}
-				>
-					<p class="w-8 h-min my-auto">
-						{message.role == LLM_ID ? 'AI' : 'ME'}
-					</p>
-				</div>
-				<div class="order-2 bg-white p-2 px-3 rounded-md text-sm">
-					{message.content}
-				</div>
-			</div>
+	<div class="flex flex-col-reverse px-4 grow overflow-y-scroll h-2 gap-2">
+		{#if replyPending}
+			<ChatMessage message={{ role: LLM_ID }}><AIChatThrobber /></ChatMessage>
+		{/if}
+		{#each messages
+			.filter((a) => a.role != FIRST_ID)
+			.reverse()
+			.concat([placeholderFirstMessage]) as message}
+			<ChatMessage {message}>{message.content}</ChatMessage>
 		{/each}
 	</div>
 	<form
@@ -108,3 +109,9 @@
 		<Button size="icon" type="submit"><ArrowBigUpDash class="w-4 h-4" /></Button>
 	</form>
 </div>
+
+<style>
+	.messages-container:last-child {
+		@apply mt-auto;
+	}
+</style>

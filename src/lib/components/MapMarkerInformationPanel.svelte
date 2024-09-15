@@ -16,13 +16,13 @@
 			<Tabs.List class="grid w-full grid-cols-2 bg-stone-200 gap-1">
 				<Tabs.Trigger
 					value="description"
-					class="data-[state=active]:bg-costar-orange bg-background hover:bg-accent hover:text-accent-foreground"
+					class="data-[state=active]:bg-costar-orange data-[state=active]:text-white bg-background hover:bg-accent hover:text-accent-foreground"
 					>Description</Tabs.Trigger
 				>
 				<Tabs.Trigger
 					value="chatbot"
-					class="data-[state=active]:bg-costar-orange bg-background hover:bg-accent hover:text-accent-foreground"
-					>Chatbot</Tabs.Trigger
+					class="data-[state=active]:bg-costar-orange data-[state=active]:text-white bg-background hover:bg-accent hover:text-accent-foreground"
+					>Chat</Tabs.Trigger
 				>
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">

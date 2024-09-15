@@ -62,7 +62,7 @@
 					color: 'red',
 					fillColor,
 					fillOpacity: 0.75,
-					radius: point.Total * 3,
+					radius: Math.max(12000, point.Total * 3),
 					opacity: 0,
 					weight: 0,
 					color: fillColor,
