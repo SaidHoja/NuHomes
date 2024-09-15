@@ -199,7 +199,7 @@
 			{#if userSearchInput.length > 0 && searchFocused}
 				{#each searchResults as result, i}
 					<button
-						class={`text-sm p-2 transition-all hover:bg-gray-100 w-full text-left ${i == searchResultsCursor && !searchMouseEntered ? 'bg-gray-100' : ''}`}
+						class={`text-sm p-2 transition-all hover:bg-gray-100 ${i == 2 || searchResults.length == 1 ? 'rounded-b-lg' : ''} w-full text-left pl-3 ${i == searchResultsCursor && !searchMouseEntered ? 'bg-gray-100' : ''}`}
 						on:click={() => {
 							// userSearchInput = result.RegionName;
 							// map.flyToBounds(result.circle);
