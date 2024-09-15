@@ -79,6 +79,35 @@
 
 		return newDict;
 	}
+
+	function cleanDataAlternative(data) {
+		const fields = {
+			Total: {
+				dollars: false,
+				prettyName: 'Total New Developments*'
+			},
+			'Median household income': {
+				dollars: true,
+				prettyName: 'Median Household Income'
+			},
+			population: {
+				dollars: false,
+				prettyName: 'Population'
+			},
+			'Median Sale Price': {
+				dollars: true,
+				prettyName: 'Median Sale Price'
+			}
+		};
+
+		let filtered = {};
+		for (const key of Object.keys(data)) {
+			if (key in fields) {
+				filtered[fields[key].prettyName] = (fields[key].dollars ? '$' : '') + data[key];
+			}
+		}
+		return filtered;
+	}
 </script>
 
 <div class="h-full w-full flex flex-col justify-center text-balance text-stone-500 text-md">
@@ -102,7 +131,7 @@
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">
 				<h2 class="text-lg ml-2 mb-1">AI Summary</h2>
-				<div class="bg-white rounded-md p-2 mb-4 text-md">
+				<div class="bg-white rounded-md p-2 px-3 mb-4 text-md">
 					{#if prevRegionName == selectedMapMarker?.RegionName}
 						{chatbotSummary}
 					{:else}
@@ -122,7 +151,7 @@
 					{:then additionalData}
 						<Table.Root>
 							<Table.Body>
-								{#each Object.entries(cleanData( { ...additionalData, ...selectedMapMarker } )) as [key, value]}
+								{#each Object.entries(cleanDataAlternative( { ...additionalData, ...selectedMapMarker } )) as [key, value]}
 									<Table.Row>
 										<Table.Cell>{key}</Table.Cell>
 										<Table.Cell>{numberWithCommas(value)}</Table.Cell>
