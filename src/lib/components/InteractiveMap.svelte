@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { interpolate } from '$lib/util/colors';
 	import { CircleCheck } from 'lucide-svelte';
+	import { Button } from '$lib/components/ui/button';
 
 	const isValidPoint = (point) => {
 		return point && point.lat && point.lng && point.Total;
@@ -26,6 +27,7 @@
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, -78.6569], 7);
 
+		// Get current position, add a marker, and pan to it
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				// Add pin for current location
@@ -41,7 +43,6 @@
 			},
 			options
 		);
-		// console.log(datapoints[0]);
 
 		// Add tile layers from openstreetmap (TODO: Review TOS for site)
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -54,9 +55,6 @@
 			map.invalidateSize();
 		});
 
-		let maxTotal = 0;
-		let minTotal = Infinity;
-
 		// Set selected map marker for info panel when a map marker is clicked on
 		function onPointClick(e) {
 			// TODO: Tweak this to see more of the bounds later
@@ -68,6 +66,9 @@
 			hasMapBeenClicked = true;
 		}
 
+		// Calculate maximums and minimums for relative coloring
+		let maxTotal = 0;
+		let minTotal = Infinity;
 		for (const point of datapoints) {
 			if (isValidPoint(point)) {
 				maxTotal = Math.max(maxTotal, point.Total);
@@ -101,10 +102,15 @@
 				continue;
 			}
 		}
+
+		// Add a button to jump to global view
+		// const globalButton = L.DivOverlay({ interactive: true, content: <p>Test</p> }).addTo(map);
 	});
 </script>
 
-<div id="map"></div>
+<div id="map">
+	<Button size="icon" class="absolute z-[401] bottom-4 left-4">T</Button>
+</div>
 
 <head>
 	<link
@@ -121,5 +127,7 @@
 		@apply rounded-md;
 		@apply rounded-tr-none;
 		@apply rounded-br-none;
+		@apply bg-background;
+		@apply z-[2];
 	}
 </style>

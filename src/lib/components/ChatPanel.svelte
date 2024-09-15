@@ -11,10 +11,13 @@
 	import ArrowBigUpDash from '~icons/lucide/arrow-big-up-dash';
 	let replyPending = false;
 	let userInput = '';
-	let placeholderFirstMessage = {
-		role: LLM_ID,
-		content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
-	};
+	let placeholderFirstMessage;
+	$: {
+		placeholderFirstMessage = {
+			role: LLM_ID,
+			content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
+		};
+	}
 
 	const USER_ID = 'user';
 	const LLM_ID = 'assistant';

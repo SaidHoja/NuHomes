@@ -74,7 +74,7 @@
 	const resizeEvent = new Event('interactiveMapResized');
 </script>
 
-<Section>
+<Section class="-mt-32">
 	<Resizable.PaneGroup direction="horizontal">
 		<Resizable.Pane defaultSize={65} minSize={20}>
 			{#await loadingPromise}

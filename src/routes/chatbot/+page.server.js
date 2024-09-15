@@ -1,5 +1,7 @@
 import { PPLX_KEY } from '$env/static/private';
+import { messagePPLX } from '$lib/util/llmUtils.js';
 
+// TODO: Feed current city into this
 const prompt = {
 	role: 'system',
 	content:
@@ -18,40 +20,41 @@ export const actions = {
 
 		console.log(messages, newMessage);
 
-		const allMessagesTogether = [prompt, ...messages, { role: 'user', content: newMessage }];
-		console.log(allMessagesTogether);
+		const unifiedMessages = [prompt, ...messages, { role: 'user', content: newMessage }];
+		console.log(unifiedMessages);
 
 		if (ENABLE_LLM_API) {
-			// Make API call
-			// Request the OpenAI API for the response based on the prompt
-			const options = {
-				method: 'POST',
-				headers: { Authorization: 'Bearer ' + PPLX_KEY, 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					model: 'llama-3.1-sonar-small-128k-online',
-					messages: allMessagesTogether,
-					// messages: [{ role: 'system', content: 'Be precise and concise.' }].concat(messages),
-					// max_tokens: '240',
-					temperature: 0.2,
-					top_p: 0.9,
-					return_citations: true,
-					search_domain_filter: ['perplexity.ai'],
-					return_images: false,
-					return_related_questions: false,
-					search_recency_filter: 'month',
-					top_k: 0,
-					stream: false,
-					presence_penalty: 0,
-					frequency_penalty: 1
-				})
-			};
+			// // Make API call
+			// // Request the OpenAI API for the response based on the prompt
+			// const options = {
+			// 	method: 'POST',
+			// 	headers: { Authorization: 'Bearer ' + PPLX_KEY, 'Content-Type': 'application/json' },
+			// 	body: JSON.stringify({
+			// 		model: 'llama-3.1-sonar-small-128k-online',
+			// 		messages: allMessagesTogether,
+			// 		// messages: [{ role: 'system', content: 'Be precise and concise.' }].concat(messages),
+			// 		// max_tokens: '240',
+			// 		temperature: 0.2,
+			// 		top_p: 0.9,
+			// 		return_citations: true,
+			// 		search_domain_filter: ['perplexity.ai'],
+			// 		return_images: false,
+			// 		return_related_questions: false,
+			// 		search_recency_filter: 'month',
+			// 		top_k: 0,
+			// 		stream: false,
+			// 		presence_penalty: 0,
+			// 		frequency_penalty: 1
+			// 	})
+			// };
 
-			let response = (await fetch('https://api.perplexity.ai/chat/completions', options)).json();
-			response = await response;
-			console.log(response);
-			let llmRes = response.choices[0].message.content;
+			// let response = (await fetch('https://api.perplexity.ai/chat/completions', options)).json();
+			// response = await response;
+			// console.log(response);
+			// let llmRes = response.choices[0].message.content;
+			const reply = await messagePPLX(unifiedMessages);
 
-			return { success: true, reply: llmRes };
+			return { success: true, reply };
 		} else {
 			// Add some delay to simulate loading
 			await new Promise((res, rej) => {

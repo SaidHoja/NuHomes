@@ -1,6 +1,15 @@
 <script>
 	export let messages = [];
 	export let selectedMapMarker = null;
+	let currentTab = 'description';
+	let currentMapMarker = selectedMapMarker;
+	$: {
+		if (selectedMapMarker != currentMapMarker) {
+			currentMapMarker = selectedMapMarker;
+			currentTab = 'description';
+		}
+		// currentTab = selectedMapMarker != currentMapMarker ? 'description' : currentTab;
+	}
 	import ChatPanel from '$lib/components/ChatPanel.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 	import { numberWithCommas } from '$lib/util/numformat';
@@ -13,7 +22,7 @@
 			{selectedMapMarker?.RegionName}
 		</h2>
 		<Separator class="mb-2" />
-		<Tabs.Root value="description" class="h-full w-full gap-2 flex flex-col">
+		<Tabs.Root bind:value={currentTab} class="h-full w-full gap-2 flex flex-col">
 			<Tabs.List class="grid w-full grid-cols-2 bg-stone-200 gap-1">
 				<Tabs.Trigger
 					value="description"
