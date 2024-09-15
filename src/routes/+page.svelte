@@ -21,8 +21,8 @@
 		'Begging CoStar for a job',
 		'Drilling plot holes',
 		'Doing nefarious things',
-		'Hold on, I\'m thinking',
-		'Reprimanding Nubert for help',
+		"Hold on, I'm thinking",
+		'Reprimanding Nubert for help'
 		// 'Installing malware',
 		// 'Scraping the dark web for your SSN',
 		// 'Stealing your browser cookies'
@@ -44,7 +44,7 @@
 		// const add = Math.random() * 0.1;
 		const add = Math.random();
 		loadingProgress.set(before + add);
-		console.log(before, $loadingProgress, add);
+		// console.log(before, $loadingProgress, add);
 	}, 1600);
 
 	// TODO: Review timing
