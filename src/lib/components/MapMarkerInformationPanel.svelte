@@ -51,7 +51,7 @@
 				<Tabs.Trigger
 					value="chatbot"
 					class="data-[state=active]:bg-costar-orange data-[state=active]:text-white bg-background hover:bg-accent hover:text-accent-foreground"
-					>Chat</Tabs.Trigger
+					>Ask Nubert</Tabs.Trigger
 				>
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">

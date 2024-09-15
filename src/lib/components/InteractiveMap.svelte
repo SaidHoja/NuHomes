@@ -7,6 +7,11 @@
 	import { interpolate } from '$lib/util/colors';
 	import { CircleCheck } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
+	import * as Tooltip from '$lib/components/ui/tooltip';
+	import Earth from '~icons/lucide/earth';
+	import ZoomIn from '~icons/lucide/zoom-in';
+	import ZoomOut from '~icons/lucide/zoom-out';
+	import MapPin from '~icons/lucide/map-pin';
 
 	const isValidPoint = (point) => {
 		return point && point.lat && point.lng && point.Total;
@@ -14,6 +19,14 @@
 
 	// Tracker for clicks, so we don't bring the user away from their selection
 	let hasMapBeenClicked = false;
+
+	// Tracker for whether geolocation has been permitted by the user
+	let geolocationAllowed = false;
+
+	// View of the US
+	const VIEW_US = [[38.52855810387187, -97.21010471523788], 4];
+	let VIEW_CUR_GEO;
+	let map;
 
 	// TODO: Add buttons for returning to global view and current location
 
@@ -25,18 +38,22 @@
 		};
 
 		const L = await import('leaflet');
-		const map = L.map('map').setView([37.4316, -78.6569], 7);
+		map = L.map('map', {
+			zoomControl: false
+		}).setView(...VIEW_US);
 
 		// Get current position, add a marker, and pan to it
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				// Add pin for current location
+				VIEW_CUR_GEO = [[pos.coords.latitude, pos.coords.longitude], 9];
 				const currentLocation = L.marker([pos.coords.latitude, pos.coords.longitude], {
 					title: 'Current location'
 				}).addTo(map);
 				if (!hasMapBeenClicked) {
-					map.setView([pos.coords.latitude, pos.coords.longitude], 9);
+					map.setView(...VIEW_CUR_GEO);
 				}
+				geolocationAllowed = true;
 			},
 			(error) => {
 				console.log(error);
@@ -109,7 +126,70 @@
 </script>
 
 <div id="map">
-	<Button size="icon" class="absolute z-[401] bottom-4 left-4">T</Button>
+	<div class="absolute z-[401] bottom-4 left-4">
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button
+					on:click={() => {
+						// event.preventDefault();
+						map && map.zoomOut(1);
+					}}
+					size="icon"
+					variant="secondary"
+					class="shadow-md"><ZoomOut /></Button
+				></Tooltip.Trigger
+			>
+			<Tooltip.Content>
+				<p>Zoom out</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button
+					on:click={() => {
+						map && map.flyTo(...VIEW_US);
+					}}
+					size="icon"
+					variant="secondary"
+					class="shadow-md"><Earth /></Button
+				></Tooltip.Trigger
+			>
+			<Tooltip.Content>
+				<p>Return to US view</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button
+					disabled={!geolocationAllowed}
+					on:click={() => {
+						map && VIEW_CUR_GEO && map.flyTo(...VIEW_CUR_GEO);
+					}}
+					size="icon"
+					variant="secondary"
+					class="shadow-md"><MapPin /></Button
+				></Tooltip.Trigger
+			>
+			<Tooltip.Content>
+				<p>{geolocationAllowed ? 'Jump to current location' : 'Location permission denied'}</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Button
+					on:click={() => {
+						map && map.zoomIn(1);
+					}}
+					size="icon"
+					variant="secondary"
+					class="shadow-md"><ZoomIn /></Button
+				></Tooltip.Trigger
+			>
+			<Tooltip.Content>
+				<p>Zoom in</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+	</div>
 </div>
 
 <head>
