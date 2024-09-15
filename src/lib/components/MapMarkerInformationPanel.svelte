@@ -12,6 +12,7 @@
 	}
 	export let prevRegionName = '';
 	export let chatbotSummary = '';
+	export let cachedAIResponses = {}; // regionname to ai response
 	import ChatPanel from '$lib/components/ChatPanel.svelte';
 	import AIChatThrobber from '$lib/components/AIChatThrobber.svelte';
 	import { Separator } from '$lib/components/ui/separator';
@@ -21,6 +22,12 @@
 
 	async function getCityDescription(regionName) {
 		console.log('sending request');
+
+		if (regionName in cachedAIResponses) {
+			console.log('cached');
+			return cachedAIResponses[regionName];
+		}
+
 		const response = await fetch('/api/chatbot', {
 			method: 'POST',
 			body: JSON.stringify({ regionName: regionName }),
@@ -33,6 +40,7 @@
 		summary = summary.message;
 		chatbotSummary = summary;
 		console.log(summary);
+		cachedAIResponses[regionName] = summary;
 		return summary;
 	}
 
