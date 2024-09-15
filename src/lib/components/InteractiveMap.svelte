@@ -14,9 +14,24 @@
 	// TODO: Add buttons for returning to global view and current location
 
 	onMount(async () => {
+		const options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, -78.6569], 7);
 
+		navigator.geolocation.getCurrentPosition(
+			(pos) => {
+				map.setView([pos.coords.latitude, pos.coords.longitude], 7);
+			},
+			(error) => {
+				console.log(error);
+			},
+			options
+		);
 		// console.log(datapoints[0]);
 
 		// Add tile layers from openstreetmap (TODO: Review TOS for site)
