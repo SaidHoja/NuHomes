@@ -11,12 +11,36 @@
 		return point && point.lat && point.lng && point.Total;
 	};
 
+	// Tracker for clicks, so we don't bring the user away from their selection
+	let hasMapBeenClicked = false;
+
 	// TODO: Add buttons for returning to global view and current location
 
 	onMount(async () => {
+		const options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+
 		const L = await import('leaflet');
 		const map = L.map('map').setView([37.4316, -78.6569], 7);
 
+		navigator.geolocation.getCurrentPosition(
+			(pos) => {
+				// Add pin for current location
+				const currentLocation = L.marker([pos.coords.latitude, pos.coords.longitude], {
+					title: 'Current location'
+				}).addTo(map);
+				if (!hasMapBeenClicked) {
+					map.setView([pos.coords.latitude, pos.coords.longitude], 9);
+				}
+			},
+			(error) => {
+				console.log(error);
+			},
+			options
+		);
 		// console.log(datapoints[0]);
 
 		// Add tile layers from openstreetmap (TODO: Review TOS for site)
@@ -41,6 +65,7 @@
 				map.flyToBounds(point.getBounds());
 				setSelectedMapMarker(point?.options?.sourceData);
 			}
+			hasMapBeenClicked = true;
 		}
 
 		for (const point of datapoints) {
@@ -62,7 +87,7 @@
 					color: 'red',
 					fillColor,
 					fillOpacity: 0.75,
-					radius: point.Total * 3,
+					radius: Math.max(12000, point.Total * 3),
 					opacity: 0,
 					weight: 0,
 					color: fillColor,

@@ -1,13 +1,20 @@
 <script>
 	export let city = 'your favorite city';
+	export let messages = [];
 	import { enhance } from '$app/forms';
+	import ChatMessage from '$lib/components/ChatMessage.svelte';
+	import AIChatThrobber from '$lib/components/AIChatThrobber.svelte';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button';
+	import { buttonVariants } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
 	import ArrowBigUpDash from '~icons/lucide/arrow-big-up-dash';
 	let replyPending = false;
 	let userInput = '';
-	let messages = [];
+	let placeholderFirstMessage = {
+		role: LLM_ID,
+		content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
+	};
 
 	const USER_ID = 'user';
 	const LLM_ID = 'assistant';
@@ -28,11 +35,13 @@
 		const existingMessages = JSON.parse(formData.get('messages'));
 		const newMessage = formData.get('newMessage');
 		userInput = '';
+		replyPending = true;
 
 		messages = [...existingMessages, { role: USER_ID, content: newMessage, confirmed: false }];
 
 		return async ({ result, update }) => {
 			console.log('form result:', result);
+			replyPending = false;
 			if (result.status == 200) {
 				if (result.data.success) {
 					messages[messages.length - 1].confirmed = true;
@@ -52,28 +61,22 @@
 	};
 </script>
 
-<!-- TODO: Add Scroll Area component -->
-<div class="rounded-md p-4 max-w-sm">
-	<div class="flex flex-col p-4">
-		{#each messages.filter((a) => a.role != FIRST_ID) as message}
-			<div
-				class={`${message.role == USER_ID ? 'self-end' : 'self-start'} flex gap-2 overflow-hidden`}
-			>
-				<div
-					class={`${message.role == USER_ID ? 'order-3' : 'order-1'} w-8 h-8 rounded-full bg-stone-700 text-white text-center`}
-				>
-					<p class="my-auto h-min">{message.role == LLM_ID ? 'AI' : 'ME'}</p>
-				</div>
-				<div class="order-2">
-					{message.content}
-				</div>
-			</div>
+<div class="flex flex-col justify-end rounded-md h-full gap-2">
+	<div class="flex flex-col-reverse px-4 grow overflow-y-scroll h-2 gap-2">
+		{#if replyPending}
+			<ChatMessage message={{ role: LLM_ID }}><AIChatThrobber /></ChatMessage>
+		{/if}
+		{#each messages
+			.filter((a) => a.role != FIRST_ID)
+			.reverse()
+			.concat([placeholderFirstMessage]) as message}
+			<ChatMessage {message}>{message.content}</ChatMessage>
 		{/each}
 	</div>
 	<form
 		method="POST"
 		action="/chatbot?/query"
-		class="flex w-fullitems-center space-x-2"
+		class="flex w-full gap-2"
 		use:enhance={customEnhanced}
 	>
 		<!-- <form
@@ -85,7 +88,7 @@
 		<Input
 			type="text"
 			placeholder={`Ask a question about ${city}...`}
-			class="max-w-xs"
+			class=""
 			name="newMessage"
 			bind:value={userInput}
 		/>
@@ -93,3 +96,9 @@
 		<Button size="icon" type="submit"><ArrowBigUpDash class="w-4 h-4" /></Button>
 	</form>
 </div>
+
+<style>
+	.messages-container:last-child {
+		@apply mt-auto;
+	}
+</style>

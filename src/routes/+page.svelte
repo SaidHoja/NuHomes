@@ -9,6 +9,9 @@
 	import { Progress } from '$lib/components/ui/progress';
 	import * as Resizable from '$lib/components/ui/resizable';
 
+	// Chat panel messages
+	let messages = [];
+
 	// Loading bar and messages
 	const LOADING_TWEEN_DURATION = 400;
 	const funLoadingMessages = [
@@ -16,7 +19,10 @@
 		'Peering into your garage',
 		'Computing shed square footage',
 		'Funding your local HOA',
-		'Please CoStar, give a job please 🥺🙏'
+		'Begging CoStar for a job',
+		'Installing malware',
+		'Scraping the dark web for your SSN',
+		'Stealing your browser cookies'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
@@ -61,6 +67,7 @@
 	// Handlers and values for the currently-selected map marker
 	let selectedMapMarker = null;
 	const setSelectedMapMarker = (marker) => {
+		messages = [];
 		selectedMapMarker = marker;
 	};
 	const resizeEventTarget = new EventTarget();
@@ -94,7 +101,7 @@
 		/>
 		<Resizable.Pane defaultSize={35} minSize={20}>
 			<div class="bg-stone-100 h-full rounded-md rounded-tl-none rounded-bl-none p-4">
-				<MapMarkerInformationPanel {selectedMapMarker} />
+				<MapMarkerInformationPanel {messages} {selectedMapMarker} />
 			</div>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>
