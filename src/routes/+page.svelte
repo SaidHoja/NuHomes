@@ -17,16 +17,12 @@
 	const funLoadingMessages = [
 		'Taking pictures of your house',
 		'Peering into your garage',
-		'Computing shed square footage',
 		'Funding your local HOA',
 		'Begging CoStar for a job',
-		'Assembling scaffolding',
-		'Drilling pilot holes',
-		'Purchasing pressure-treated lumber',
-		'Patching sinkholes',
-		'Installing storm drains',
-		'Assembling IKEA furniture',
-		'Touring a new rental property'
+		'Drilling plot holes',
+		'Doing nefarious things',
+		'Hold on, I\'m thinking',
+		'Reprimanding Nubert for help',
 		// 'Installing malware',
 		// 'Scraping the dark web for your SSN',
 		// 'Stealing your browser cookies'
