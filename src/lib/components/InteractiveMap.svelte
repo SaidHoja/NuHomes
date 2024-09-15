@@ -43,7 +43,8 @@
 	let searchMouseEntered = false;
 
 	const selectMapMarker = (mkr) => {
-		userSearchInput = mkr.RegionName;
+		console.log('marker selected');
+		userSearchInput = mkr.RegionName + ' ';
 		map.flyToBounds(mkr.circle);
 		setSelectedMapMarker(mkr);
 		searchFocused = false;
@@ -163,6 +164,7 @@
 				bind:value={userSearchInput}
 				on:keydown={(e) => {
 					// console.log(e);
+					console.log('keydown fired ', e.key);
 					if (searchResults.length > 0) {
 						if (e.key === 'Enter') {
 							selectMapMarker(searchResults[searchResultsCursor]);
@@ -178,12 +180,13 @@
 					}
 				}}
 				on:focus={(e) => {
-					console.log('focus');
+					// console.log('focus');
 					searchFocused = true;
 				}}
 				on:blur={(e) => {
-					console.log('blur');
-					searchFocused = false;
+					// console.log('blur');
+					// FIXME:
+					// searchFocused = false;
 				}}
 			/><button class="p-2 pr-4 absolute right-4 top-5"
 				><Search class="text-costar-orange w-4 h-4" /></button
@@ -200,16 +203,19 @@
 		>
 			{#if userSearchInput.length > 0 && searchFocused}
 				{#each searchResults as result, i}
-					<button
+					<div
 						class={`text-sm p-2 transition-all hover:bg-gray-100 ${i == 1 || searchResults.length == 1 ? 'rounded-b-lg' : ''} w-full text-left pl-3 ${i == searchResultsCursor && !searchMouseEntered ? 'bg-gray-100' : ''}`}
-						on:click={() => {
+						on:click={(e) => {
+							console.log('on clik triggerd for this one');
 							// userSearchInput = result.RegionName;
 							// map.flyToBounds(result.circle);
 							// setSelectedMapMarker(result);
 							// searchFocused = false;
 							selectMapMarker(result);
-						}}>{result.RegionName}</button
+						}}
 					>
+						{result.RegionName}
+					</div>
 				{/each}
 			{/if}
 		</div>

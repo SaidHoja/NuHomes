@@ -19,6 +19,7 @@
 	import * as Table from '$lib/components/ui/table';
 	import { numberWithCommas } from '$lib/util/numformat';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import MapPinHouse from '~icons/lucide/map-pin-house';
 
 	async function getCityDescription(regionName) {
 		console.log('sending request');
@@ -184,6 +185,7 @@
 			</Tabs.Content>
 		</Tabs.Root>
 	{:else}
-		<h2 class="text-2xl w-3/4 text-center mx-auto">Select a metro area for details</h2>
+		<MapPinHouse class="w-12 h-12 self-center mb-2" />
+		<h2 class="text-2xl w-3/4 text-center mx-auto font-normal">Select a metro area for details</h2>
 	{/if}
 </div>
