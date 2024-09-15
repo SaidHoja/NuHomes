@@ -10,10 +10,29 @@
 		}
 		// currentTab = selectedMapMarker != currentMapMarker ? 'description' : currentTab;
 	}
+	export let prevRegionName = '';
+	export let chatbotSummary = '';
 	import ChatPanel from '$lib/components/ChatPanel.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 	import { numberWithCommas } from '$lib/util/numformat';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
+
+	async function getCityDescription(regionName) {
+		console.log('sending request');
+		const response = await fetch('/api/chatbot', {
+			method: 'POST',
+			body: JSON.stringify({ regionName: regionName }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		prevRegionName = regionName;
+		let summary = await response.json();
+		summary = summary.message;
+		chatbotSummary = summary;
+		console.log(summary);
+		return summary;
+	}
 </script>
 
 <div class="h-full w-full flex flex-col justify-center text-balance text-stone-500 text-md">
@@ -36,6 +55,19 @@
 				>
 			</Tabs.List>
 			<Tabs.Content value="description" class="h-full">
+				<p>
+					{#if prevRegionName == selectedMapMarker?.RegionName}
+						{chatbotSummary}
+					{:else}
+						{#await getCityDescription(selectedMapMarker?.RegionName)}
+							Loading...
+						{:then summary}
+							{summary}
+						{/await}
+					{/if}
+					<br />
+					<br />
+				</p>
 				<p>
 					New housing projects in the last 24 months: {numberWithCommas(selectedMapMarker?.Total)}
 				</p>
