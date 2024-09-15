@@ -1,4 +1,5 @@
 <script>
+	export let messages = [];
 	export let selectedMapMarker = null;
 	import ChatPanel from '$lib/components/ChatPanel.svelte';
 	import { Separator } from '$lib/components/ui/separator';
@@ -32,7 +33,7 @@
 				<p>Total population: {numberWithCommas(selectedMapMarker?.population)}</p>
 			</Tabs.Content>
 			<Tabs.Content value="chatbot" class="flex-grow">
-				<ChatPanel city={selectedMapMarker?.RegionName} />
+				<ChatPanel {messages} city={selectedMapMarker?.RegionName} />
 			</Tabs.Content>
 		</Tabs.Root>
 	{:else}

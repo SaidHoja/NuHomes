@@ -1,5 +1,6 @@
 <script>
 	export let city = 'your favorite city';
+	export let messages = [];
 	import { enhance } from '$app/forms';
 	import ChatMessage from '$lib/components/ChatMessage.svelte';
 	import AIChatThrobber from '$lib/components/AIChatThrobber.svelte';
@@ -14,20 +15,6 @@
 		role: LLM_ID,
 		content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
 	};
-	let messages = [
-		// {
-		// 	role: LLM_ID,
-		// 	content: `Hi, I'm Nubert! Ask me any question you might have about ${city}!`
-		// },
-		// {
-		// 	role: USER_ID,
-		// 	content: `Hi, Nubert! It's great to meet you. Could you tell me more about ${city}?`
-		// },
-		// {
-		// 	role: LLM_ID,
-		// 	content: `Definitely, here's some information about the wonderful destination of ${city}: (...)`
-		// }
-	];
 
 	const USER_ID = 'user';
 	const LLM_ID = 'assistant';

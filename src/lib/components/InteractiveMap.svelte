@@ -11,6 +11,9 @@
 		return point && point.lat && point.lng && point.Total;
 	};
 
+	// Tracker for clicks, so we don't bring the user away from their selection
+	let hasMapBeenClicked = false;
+
 	// TODO: Add buttons for returning to global view and current location
 
 	onMount(async () => {
@@ -25,7 +28,13 @@
 
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
-				map.setView([pos.coords.latitude, pos.coords.longitude], 7);
+				// Add pin for current location
+				const currentLocation = L.marker([pos.coords.latitude, pos.coords.longitude], {
+					title: 'Current location'
+				}).addTo(map);
+				if (!hasMapBeenClicked) {
+					map.setView([pos.coords.latitude, pos.coords.longitude], 9);
+				}
 			},
 			(error) => {
 				console.log(error);
@@ -56,6 +65,7 @@
 				map.flyToBounds(point.getBounds());
 				setSelectedMapMarker(point?.options?.sourceData);
 			}
+			hasMapBeenClicked = true;
 		}
 
 		for (const point of datapoints) {
