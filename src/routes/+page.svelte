@@ -74,11 +74,11 @@
 	const resizeEvent = new Event('interactiveMapResized');
 </script>
 
-<Section class="-mt-32">
+<Section class="-mt-32 min-h-[90vh]">
 	<Resizable.PaneGroup direction="horizontal">
 		<Resizable.Pane defaultSize={65} minSize={20}>
 			{#await loadingPromise}
-				<div class="w-full h-[550px] flex flex-col items-center justify-center gap-2">
+				<div class="w-full h-[90vh] flex flex-col items-center justify-center gap-2">
 					<h1>{funLoadingMessage}...</h1>
 					<div class="w-2/5">
 						<Progress value={$loadingProgress * 100} />
@@ -87,7 +87,7 @@
 			{:then datapoints}
 				<InteractiveMap {datapoints} {setSelectedMapMarker} {resizeEventTarget} />
 			{:catch err}
-				<div class="w-full h-[550px] flex flex-col items-center justify-center gap-1">
+				<div class="w-full h-[90vh] flex flex-col items-center justify-center gap-1">
 					<h1 class="text-lg">Something went wrong!</h1>
 					<h2 class="text-stone-500">Please try again later.</h2>
 				</div>

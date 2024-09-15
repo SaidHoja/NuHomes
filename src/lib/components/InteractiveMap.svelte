@@ -203,7 +203,8 @@
 
 <style>
 	#map {
-		height: 550px;
+		/* height: 550px; */
+		height: 90vh;
 		@apply rounded-md;
 		@apply rounded-tr-none;
 		@apply rounded-br-none;
