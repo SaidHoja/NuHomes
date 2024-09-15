@@ -187,6 +187,9 @@
 					// console.log('blur');
 					// FIXME:
 					// searchFocused = false;
+					setTimeout(() => {
+						searchFocused = false;
+					}, 250);
 				}}
 			/><button class="p-2 pr-4 absolute right-4 top-5"
 				><Search class="text-costar-orange w-4 h-4" /></button
