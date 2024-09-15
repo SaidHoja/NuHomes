@@ -91,11 +91,11 @@
 		<Input
 			type="text"
 			placeholder={`Ask a question about ${city}...`}
-			class=""
 			name="newMessage"
 			bind:value={userInput}
 		/>
 		<input type="hidden" name="messages" value={JSON.stringify(messages)} />
+		<input type="hidden" name="location" value={city} />
 		<Button size="icon" type="submit"><ArrowBigUpDash class="w-4 h-4" /></Button>
 	</form>
 </div>

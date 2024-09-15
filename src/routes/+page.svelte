@@ -20,9 +20,16 @@
 		'Computing shed square footage',
 		'Funding your local HOA',
 		'Begging CoStar for a job',
-		'Installing malware',
-		'Scraping the dark web for your SSN',
-		'Stealing your browser cookies'
+		'Assembling scaffolding',
+		'Drilling pilot holes',
+		'Purchasing pressure-treated lumber',
+		'Patching sinkholes',
+		'Installing storm drains',
+		'Assembling IKEA furniture',
+		'Touring a new rental property'
+		// 'Installing malware',
+		// 'Scraping the dark web for your SSN',
+		// 'Stealing your browser cookies'
 	];
 	const getFunLoadingMessage = () => {
 		return funLoadingMessages[Math.floor(Math.random() * funLoadingMessages.length)];
