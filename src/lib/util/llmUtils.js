@@ -9,7 +9,7 @@ export async function messagePPLX(messages, temperature = 0.2, initialPrompt = [
       method: 'POST',
       headers: { Authorization: 'Bearer ' + PPLX_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.1-sonar-large-128k-online',
+        model: 'llama-3.1-sonar-large-128k-chat',
         messages: initialPrompt.concat(messages),
         temperature: temperature,
         top_p: 0.9,
